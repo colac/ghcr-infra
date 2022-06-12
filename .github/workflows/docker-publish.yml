@@ -32,7 +32,7 @@ jobs:
     needs: set-unique-id
     runs-on: ubuntu-latest
     outputs:
-      UNIQUE_ID: ${{ steps.stepuniqueid.outputs.containername }}
+      REPO_IMAGE_NAME: ${{ steps.stepuniqueid.outputs.containername }}
     steps:
     - name: Sets branch_name var to main
       run: |
@@ -50,8 +50,8 @@ jobs:
 
     - id: stepcontainername
       env:
-        REPO_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ env.BRANCH_NAME }}-${{ github.run_id }}-${{ github.run_attempt }}
-      run: echo "::set-output name=containername::$REPO_IMAGE_NAME"
+        REPO_IMAGE_NAME_VALUE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ env.BRANCH_NAME }}-${{ github.run_id }}-${{ github.run_attempt }}
+      run: echo "::set-output name=containername::$REPO_IMAGE_NAME_VALUE"
 
     # - name: save repo_image_name to GITHUB_ENV
     #   env:
@@ -66,7 +66,7 @@ jobs:
     steps:
     - name: print repo_image_name
       run: |
-        echo "REPO_IMAGE_NAME" ${{needs.set-container-name.REPO_IMAGE_NAME}}
+        echo "REPO_IMAGE_NAME" ${{ needs.set-container-name.REPO_IMAGE_NAME }}
 
 
   # print-date:
