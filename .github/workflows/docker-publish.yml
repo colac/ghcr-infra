@@ -52,7 +52,7 @@ jobs:
 
     - name: print repo_image_name
       env:
-        REPO_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$BRANCH_NAME-${{ github.run_id }}-${{ github.run_attempt }}
+        REPO_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ env.BRANCH_NAME }}-${{ github.run_id }}-${{ github.run_attempt }}
       run: |
         echo "REPO_IMAGE_NAME" ${{ env.REPO_IMAGE_NAME }}
 
