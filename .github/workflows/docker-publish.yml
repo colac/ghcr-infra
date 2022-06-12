@@ -17,7 +17,7 @@ jobs:
     outputs:
       UNIQUE_ID: ${{ steps.step1.outputs.uniqueid }}
     steps:
-    - name: Sets UNIQUE_ID
+    #- name: Sets UNIQUE_ID
     - id: step1
       env:
         UNIQUE_ID_VALUE: ${{ github.run_id }}-${{ github.run_attempt }}
