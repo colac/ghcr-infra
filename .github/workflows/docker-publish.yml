@@ -32,7 +32,7 @@ jobs:
     needs: set-unique-id
     runs-on: ubuntu-latest
     outputs:
-      REPO_IMAGE_NAME: ${{ steps.stepuniqueid.outputs.containername }}
+      REPO_IMAGE_NAME: ${{ steps.stepcontainername.outputs.containername }}
     steps:
     - name: Sets branch_name var to main
       run: |
