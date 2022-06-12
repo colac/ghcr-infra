@@ -12,7 +12,7 @@ on:
   #   branches: [ "main" ]
 
 jobs:
-  branch-set:
+  branch-var-set:
     runs-on: ubuntu-latest
     steps:
     - name: Sets env vars for main
@@ -26,6 +26,14 @@ jobs:
         BRANCH_NAME: "dev"
       run: echo "Running on branch $BRANCH_NAME"
       if: github.ref != 'refs/heads/main'
+
+    - name: set release date
+      run: |
+        echo "RELEASE_DATE=$(date +"%Y-%m-%d")" >> ${GITHUB_ENV}
+        
+  print-date:
+    - name: print GITHUB_ENV RELEASE_DATE
+      run: echo ${{ env.RELEASE_DATE }}
 
 # env:
 #   # Use docker.io for Docker Hub if empty
