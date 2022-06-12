@@ -16,7 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
-      BAR : BAZ
+      run: |
+        echo "uniqueId ${{ env.UNIQUE_ID }}"
   branch-var-set:
     runs-on: ubuntu-latest
     steps:
