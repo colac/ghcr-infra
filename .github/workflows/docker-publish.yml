@@ -12,13 +12,15 @@ on:
   #   branches: [ "main" ]
 
 jobs:
-  build-test-deploy:
+  set-unique-id:
     runs-on: ubuntu-latest
     steps:
-    env:
-      UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
+    - name: Sets UNIQUE_ID
+      env:
+        UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
       run: |
         echo "uniqueId ${{ env.UNIQUE_ID }}"
+
   branch-var-set:
     runs-on: ubuntu-latest
     steps:
