@@ -12,6 +12,11 @@ on:
   #   branches: [ "main" ]
 
 jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+    env:
+      UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
+      BAR : BAZ
   branch-var-set:
     runs-on: ubuntu-latest
     steps:
@@ -27,15 +32,19 @@ jobs:
       run: echo "Running on branch $BRANCH_NAME"
       if: github.ref != 'refs/heads/main'
 
-    - name: set release date
+    - name: uniqueId UNIQUE_ID
       run: |
-        echo "RELEASE_DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
+        echo "uniqueId $UNIQUE_ID"
 
-  print-date:
-    runs-on: ubuntu-latest
-    steps:
-    - name: print GITHUB_ENV RELEASE_DATE
-      run: echo ${{ env.RELEASE_DATE }}
+    - name: uniqueId UNIQUE_ID
+      run: |
+        echo "uniqueId ${{ env.UNIQUE_ID }}"
+
+  # print-date:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: print GITHUB_ENV RELEASE_DATE
+  #     run: echo ${{ env.RELEASE_DATE }}
 
 # env:
 #   # Use docker.io for Docker Hub if empty
