@@ -22,6 +22,7 @@ jobs:
         echo "uniqueId ${{ env.UNIQUE_ID }}"
 
   branch-var-set:
+    needs: set-unique-id
     runs-on: ubuntu-latest
     steps:
     - name: Sets env vars for main
