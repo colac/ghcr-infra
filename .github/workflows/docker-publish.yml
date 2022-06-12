@@ -14,12 +14,16 @@ on:
 jobs:
   set-unique-id:
     runs-on: ubuntu-latest
+    outputs:
+      UNIQUE_ID: ${{ steps.step1.outputs.uniqueid }}
     steps:
     - name: Sets UNIQUE_ID
+    - id: step1
       env:
-        UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
-      run: |
-        echo "uniqueId ${{ env.UNIQUE_ID }}"
+        UNIQUE_ID_VALUE: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: echo "::set-output name=uniqueid::$UNIQUE_ID_VALUE"
+      # run: |
+      #   echo "uniqueId ${{ env.UNIQUE_ID }}"
 
   branch-var-set:
     needs: set-unique-id
@@ -43,7 +47,7 @@ jobs:
 
     - name: uniqueId UNIQUE_ID
       run: |
-        echo "uniqueId ${{ env.UNIQUE_ID }}"
+        echo "uniqueId" ${{needs.set-unique-id.outputs.UNIQUE_ID}}
 
   # print-date:
   #   runs-on: ubuntu-latest
