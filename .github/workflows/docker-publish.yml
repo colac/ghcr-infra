@@ -35,15 +35,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Sets env vars for main
-      env:
-        BRANCH_NAME: "main"
-      run: echo "Running on branch $BRANCH_NAME"
+      # env:
+      #   BRANCH_NAME: "main"
+      #run: echo "Running on branch $BRANCH_NAME"
+      echo "{BRANCH_NAME}={main}" >> $GITHUB_ENV
       if: github.ref == 'refs/heads/main'
 
     - name: Sets env vars for dev
-      env:
-        BRANCH_NAME: "dev"
-      run: echo "Running on branch $BRANCH_NAME"
+      # env:
+      #   BRANCH_NAME: "dev"
+      #run: echo "Running on branch $BRANCH_NAME"
+      echo "{BRANCH_NAME}={dev}" >> $GITHUB_ENV
       if: github.ref != 'refs/heads/main'
 
     - name: uniqueId UNIQUE_ID
