@@ -30,8 +30,10 @@ jobs:
     - name: set release date
       run: |
         echo "RELEASE_DATE=$(date +"%Y-%m-%d")" >> ${GITHUB_ENV}
-        
+
   print-date:
+    runs-on: ubuntu-latest
+    steps:
     - name: print GITHUB_ENV RELEASE_DATE
       run: echo ${{ env.RELEASE_DATE }}
 
