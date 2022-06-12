@@ -14,7 +14,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  REPO_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$BRANCH_NAME-${{ github.run_id }}-${{ github.run_attempt }}
+  
 
 jobs:
   set-unique-id:
@@ -33,6 +33,8 @@ jobs:
   branch-var-set:
     needs: set-unique-id
     runs-on: ubuntu-latest
+    env:
+      REPO_IMAGE_NAME: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/$BRANCH_NAME-${{ github.run_id }}-${{ github.run_attempt }}
     steps:
     - name: Sets env vars for main
       env:
@@ -52,7 +54,7 @@ jobs:
 
     - name: print repo_image_name
       run: |
-        echo "REPO_IMAGE_NAME" $REPO_IMAGE_NAME
+        echo "REPO_IMAGE_NAME" ${{ env.REPO_IMAGE_NAME }}
 
   # print-date:
   #   runs-on: ubuntu-latest
