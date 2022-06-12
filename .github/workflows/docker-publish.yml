@@ -11,19 +11,21 @@ on:
   pull_request:
     branches: [ "main", "dev" ]
 
-env:
-    BRANCH_NAME: "dev"
-
 jobs:
-  main-check:
-    if: github.ref == 'refs/heads/main'
+  branch-set:
     runs-on: ubuntu-latest
-    env:
-      BRANCH_NAME: "main"
-    
-  branch-print:
     steps:
-      - run: echo "Running on branch $BRANCH_NAME"
+    - name: Sets env vars for main
+      env:
+        BRANCH_NAME: "main"
+      run: echo "Running on branch $BRANCH_NAME"
+      if: github.ref == 'refs/heads/main'
+
+    - name: Sets env vars for dev
+      env:
+        BRANCH_NAME: "dev"
+      run: echo "Running on branch $BRANCH_NAME"
+      if: github.ref != 'refs/heads/main'
 
 # env:
 #   # Use docker.io for Docker Hub if empty
