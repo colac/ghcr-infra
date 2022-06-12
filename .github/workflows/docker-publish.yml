@@ -8,8 +8,8 @@ name: Docker
 on:
   push:
     branches: [ "main", "dev" ]
-  pull_request:
-    branches: [ "main", "dev" ]
+  # pull_request:
+  #   branches: [ "main" ]
 
 jobs:
   branch-set:
