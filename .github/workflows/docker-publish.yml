@@ -21,7 +21,7 @@ jobs:
     - id: step1
       env:
         UNIQUE_ID_VALUE: ${{ github.run_id }}-${{ github.run_attempt }}
-        run: echo "::set-output name=uniqueid::$UNIQUE_ID_VALUE"
+      run: echo "::set-output name=uniqueid::$UNIQUE_ID_VALUE"
       # run: |
       #   echo "uniqueId ${{ env.UNIQUE_ID }}"
 
