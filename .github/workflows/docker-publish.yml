@@ -14,6 +14,7 @@ on:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    steps:
     env:
       UNIQUE_ID : ${{ github.run_id }}-${{ github.run_attempt }}
       run: |
