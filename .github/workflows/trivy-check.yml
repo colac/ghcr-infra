@@ -1,4 +1,4 @@
-name: build
+name: Trivy colac
 on:
   push:
     branches:
@@ -17,8 +17,11 @@ jobs:
       #  run: |
       #    docker build -t ghcr.io/colac/dotnet-api/dev-2485129075-1:dev .
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
+      #- name: Run Trivy vulnerability scanner
+      #  uses: aquasecurity/trivy-action@master
+      - name: GH Trivy latest - testing
+        uses: colac/trivy-action@v0.0.10
+
         with:
           image-ref: 'ghcr.io/colac/dotnet-api/dev-2485129075-1:dev'
           format: 'table'
