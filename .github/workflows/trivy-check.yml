@@ -7,15 +7,15 @@ on:
   pull_request:
 jobs:
   build:
-    name: Build
+    name: Trivy-check
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build an image from Dockerfile
-        run: |
-          docker build -t ghcr.io/colac/dotnet-api/dev-2485129075-1:dev .
+      #- name: Build an image from Dockerfile
+      #  run: |
+      #    docker build -t ghcr.io/colac/dotnet-api/dev-2485129075-1:dev .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
