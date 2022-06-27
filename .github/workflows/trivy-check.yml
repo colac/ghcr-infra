@@ -15,7 +15,7 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          docker build -t ghcr.io/colac/dotnet-api/dev-2485129075-1:dev .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
