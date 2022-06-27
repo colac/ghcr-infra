@@ -26,6 +26,6 @@ jobs:
           image-ref: 'ghcr.io/colac/dotnet-api/dev-2485129075-1:dev'
           format: 'table'
           exit-code: '1'
-          ignore-unfixed: true
+          ignore-unfixed: false
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH,MEDIUM,LOW'
