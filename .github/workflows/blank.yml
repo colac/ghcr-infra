@@ -91,6 +91,7 @@ jobs:
         az resource list
   terraform:
     name: 'Terraform'
+    needs: az-login
     runs-on: ubuntu-latest
     environment: production
 
