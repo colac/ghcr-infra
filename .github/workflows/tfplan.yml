@@ -115,11 +115,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
 
-    # Perform az login
-    - name: Azure Login
-      uses: Azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+    # # Perform az login
+    # - name: Azure Login
+    #   uses: Azure/login@v1
+    #   with:
+    #     creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
     - name: Export azure creds for terraform to access azure SA
       #if: github.base_ref == 'tst'
