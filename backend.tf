@@ -2,12 +2,12 @@
 terraform {
     required_version = ">=1.2.0"
     backend "azurerm" {
-        tenant_id            = "f4a1e29e-05f7-4745-a47b-8910478562d0"
-        subscription_id      = "42ced274-51ca-411e-8973-78df7811f3ad"
+        #tenant_id            = "f4a1e29e-05f7-4745-a47b-8910478562d0"
+        #subscription_id      = "42ced274-51ca-411e-8973-78df7811f3ad"
         storage_account_name = "pgsicpsa"
         container_name       = "container-tfstates"
-        key                  = "infra/gh-infra-kv/tfstate"
-        use_azuread_auth     = true 
+        key                  = "infra/infra-kv/tfstate"
+        #use_azuread_auth     = true 
     }
     required_providers {
         azurerm = {
