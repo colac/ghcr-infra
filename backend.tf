@@ -6,7 +6,7 @@ terraform {
         #subscription_id      = "42ced274-51ca-411e-8973-78df7811f3ad"
         storage_account_name = "pgsicpsa"
         container_name       = "container-tfstates"
-        key                  = "infra/infra-kv/tfstate"
+        key                  = "infra/infra-kv-gh/tfstate"
         #use_azuread_auth     = true 
     }
     required_providers {
