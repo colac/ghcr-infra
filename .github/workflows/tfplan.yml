@@ -106,19 +106,17 @@ jobs:
     #needs: az-login
     runs-on: ubuntu-latest
     environment: $GITHUB_BASE_REF
-
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
-
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
 
     # Perform az login
-    name: Azure Login
+    - name: Azure Login
     steps:
     - uses: Azure/login@v1
       with:

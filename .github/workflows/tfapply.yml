@@ -106,7 +106,7 @@ jobs:
       uses: actions/checkout@v3
 
     # Perform az login
-    name: Azure Login
+    - name: Azure Login
     steps:
     - uses: Azure/login@v1
       with:
