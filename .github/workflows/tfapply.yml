@@ -126,22 +126,22 @@ jobs:
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       run: terraform init
       
-    - name: Terraform workspace new $GITHUB_BASE_REF
+    - name: Terraform workspace new $GITHUB_HEAD_REF
       env:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      run: terraform workspace new $GITHUB_BASE_REF
+      run: terraform workspace new $GITHUB_HEAD_REF
       continue-on-error: true
       
-    - name: Terraform workspace select $GITHUB_BASE_REF
+    - name: Terraform workspace select $GITHUB_HEAD_REF
       env:
         ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
         ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      run: terraform workspace select $GITHUB_BASE_REF
+      run: terraform workspace select $GITHUB_HEAD_REF
       
     # # Checks that all Terraform configuration files adhere to a canonical format
     # - name: Terraform Format
