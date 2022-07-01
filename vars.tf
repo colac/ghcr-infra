@@ -40,7 +40,7 @@ variable "location" {
 variable "tags" {
     type = map(string)
     default = {
-        terraformProject         = "https://github.com/colac/pgsicp-infra-kv"
+        terraformProject         = "https://github.com/colac/ghcr-infra/"
         state                    = "live"
   }
     description = "Tags that will be applied to the resources."
