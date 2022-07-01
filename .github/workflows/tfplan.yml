@@ -74,16 +74,16 @@ jobs:
     #  REPO_IMAGE_NAME: ${{ steps.stepcontainername.outputs.containername }}
     steps:
     - name: Sets branch_name var to main
-      if: github.head_ref == 'refs/heads/main'
+      if: github.base_ref == 'refs/heads/main'
       run: |
         echo "BRANCH_NAME=main" >> $GITHUB_ENV
     - name: Sets branch_name var to preprd
-      if: github.head_ref == 'refs/heads/preprd'
+      if: github.base_ref == 'refs/heads/preprd'
       run: |
         echo "BRANCH_NAME=preprd" >> $GITHUB_ENV
       
     - name: Sets branch_name var to tst
-      if: github.head_ref == 'refs/heads/tst'
+      if: github.base_ref == 'refs/heads/tst'
       run: |
         echo "BRANCH_NAME=tst" >> $GITHUB_ENV
   az-login:
