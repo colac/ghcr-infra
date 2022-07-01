@@ -4,6 +4,7 @@ terraform {
     backend "azurerm" {
         #tenant_id            = "f4a1e29e-05f7-4745-a47b-8910478562d0"
         #subscription_id      = "42ced274-51ca-411e-8973-78df7811f3ad"
+        resource_group_name  = "pgsicp-rg"
         storage_account_name = "pgsicpsa"
         container_name       = "container-tfstates"
         key                  = "infra/infra-kv-gh/tfstate"
