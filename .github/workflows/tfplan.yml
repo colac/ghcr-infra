@@ -59,6 +59,12 @@ on:
 
 jobs:
 
+  github-actions-environment-variables-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: List of the GitHub Actions environment variables on Windows
+        run: env
+
 # Create container name var REPO_IMAGE_NAME
   set-branch-name:
     name: 'Get-branch-name'
