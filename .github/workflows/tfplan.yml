@@ -83,9 +83,14 @@ jobs:
         echo "BRANCH_NAME=preprd" >> $GITHUB_ENV
       
     - name: Sets branch_name var to tst
-      if: github.base_ref == 'refs/heads/tst'
+      if: github.base_ref == 'tst'
       run: |
         echo "BRANCH_NAME=tst" >> $GITHUB_ENV
+        
+    - name: Echo GITHUB_BASE_REF
+      run: |
+        echo $GITHUB_BASE_REF
+        
   az-login:
     name: 'Azure-Login'
     runs-on: ubuntu-latest
