@@ -73,6 +73,10 @@ jobs:
     #outputs:
     #  REPO_IMAGE_NAME: ${{ steps.stepcontainername.outputs.containername }}
     steps:
+    - name: Echo GITHUB_BASE_REF
+      run: |
+        echo $GITHUB_BASE_REF
+        
     - name: Sets branch_name var to main
       if: github.base_ref == 'refs/heads/main'
       run: |
@@ -87,9 +91,7 @@ jobs:
       run: |
         echo "BRANCH_NAME=tst" >> $GITHUB_ENV
         
-    - name: Echo GITHUB_BASE_REF
-      run: |
-        echo $GITHUB_BASE_REF
+
         
   az-login:
     name: 'Azure-Login'
