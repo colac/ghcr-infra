@@ -93,18 +93,20 @@ jobs:
         
 
         
-  az-login:
-    name: 'Azure-Login'
-    runs-on: ubuntu-latest
-    steps:
-    - uses: Azure/login@v1
-      with:
-        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
-    - run: |
-        az resource list
+  # az-login:
+  #   name: 'Azure-Login'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: Azure/login@v1
+  #     with:
+  #       creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
+  #   - run: |
+  #       az resource list
+
+
   terraform:
     name: 'Terraform'
-    needs: az-login
+    #needs: az-login
     runs-on: ubuntu-latest
     environment: $GITHUB_BASE_REF
 
@@ -117,6 +119,14 @@ jobs:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3
+
+    # Perform az login
+    name: 'Azure-Login'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: Azure/login@v1
+      with:
+        creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
