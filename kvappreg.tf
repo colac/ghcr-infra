@@ -3,22 +3,22 @@ resource "azuread_application" "kvappreg" {
     display_name            = "appregt-${var.kvName}-${var.env[terraform.workspace]}"
     prevent_duplicate_names = true
 }
-resource "azuread_service_principal" "kvappregsp" {
-  application_id = azuread_application.kvappreg.application_id
-  use_existing   = true
-}
+# resource "azuread_service_principal" "kvappregsp" {
+#   application_id = azuread_application.kvappreg.application_id
+#   use_existing   = true
+# }
 # Create secret in AppReg
-resource "azuread_application_password" "kvappregsecret" {
-    application_object_id = azuread_application.kvappreg.object_id
-}
+# resource "azuread_application_password" "kvappregsecret" {
+#     application_object_id = azuread_application.kvappreg.object_id
+# }
 # Save AppID in kv
-resource "azurerm_key_vault_secret" "kvclientid" {
-    name         = "appReg-${var.kvName}-${var.env[terraform.workspace]}-clientID"
-    value        = azuread_application.kvappreg.application_id
-    key_vault_id = azurerm_key_vault.infrakv.id
-    # Tags to apply
-    tags = var.tags
-}
+# resource "azurerm_key_vault_secret" "kvclientid" {
+#     name         = "appReg-${var.kvName}-${var.env[terraform.workspace]}-clientID"
+#     value        = azuread_application.kvappreg.application_id
+#     key_vault_id = azurerm_key_vault.infrakv.id
+#     # Tags to apply
+#     tags = var.tags
+# }
 # Save secret in kv
 resource "azurerm_key_vault_secret" "kvclientsecret" {
     name         = "appReg-${var.kvName}-${var.env[terraform.workspace]}-clientSecret"
