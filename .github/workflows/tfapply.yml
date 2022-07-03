@@ -1,47 +1,3 @@
-# This workflow installs the latest version of Terraform CLI and configures the Terraform CLI configuration file
-# with an API token for Terraform Cloud (app.terraform.io). On pull request events, this workflow will run
-# `terraform init`, `terraform fmt`, and `terraform plan` (speculative plan via Terraform Cloud). On push events
-# to the "main" branch, `terraform apply` will be executed.
-#
-# Documentation for `hashicorp/setup-terraform` is located here: https://github.com/hashicorp/setup-terraform
-#
-# To use this workflow, you will need to complete the following setup steps.
-#
-# 1. Create a `main.tf` file in the root of this repository with the `remote` backend and one or more resources defined.
-#   Example `main.tf`:
-#     # The configuration for the `remote` backend.
-#     terraform {
-#       backend "remote" {
-#         # The name of your Terraform Cloud organization.
-#         organization = "example-organization"
-#
-#         # The name of the Terraform Cloud workspace to store Terraform state files in.
-#         workspaces {
-#           name = "example-workspace"
-#         }
-#       }
-#     }
-#
-#     # An example resource that does nothing.
-#     resource "null_resource" "example" {
-#       triggers = {
-#         value = "A example resource that does nothing!"
-#       }
-#     }
-#
-#
-# 2. Generate a Terraform Cloud user API token and store it as a GitHub secret (e.g. TF_API_TOKEN) on this repository.
-#   Documentation:
-#     - https://www.terraform.io/docs/cloud/users-teams-organizations/api-tokens.html
-#     - https://help.github.com/en/actions/configuring-and-managing-workflows/creating-and-storing-encrypted-secrets
-#
-# 3. Reference the GitHub secret in step using the `hashicorp/setup-terraform` GitHub Action.
-#   Example:
-#     - name: Setup Terraform
-#       uses: hashicorp/setup-terraform@v1
-#       with:
-#         cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
 name: 'Terraform'
 
 on:
@@ -58,38 +14,6 @@ on:
   #contents: read
 
 jobs:
-
-# Create container name var REPO_IMAGE_NAME
-  # set-branch-name:
-  #   name: 'Get-branch-name'
-  #   #needs: set-unique-id
-  #   runs-on: ubuntu-latest
-  #   #outputs:
-  #   #  REPO_IMAGE_NAME: ${{ steps.stepcontainername.outputs.containername }}
-  #   steps:
-  #   - name: Sets branch_name var to main
-  #     if: github.ref == 'refs/heads/main'
-  #     run: |
-  #       echo "BRANCH_NAME=main" >> $GITHUB_ENV
-  #   - name: Sets branch_name var to preprd
-  #     if: github.ref == 'refs/heads/preprd'
-  #     run: |
-  #       echo "BRANCH_NAME=preprd" >> $GITHUB_ENV
-      
-  #   - name: Sets branch_name var to tst
-  #     if: github.ref == 'refs/heads/tst'
-  #     run: |
-  #       echo "BRANCH_NAME=tst" >> $GITHUB_ENV
-
-  # az-login:
-  #   name: 'Azure-Login'
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - uses: Azure/login@v1
-  #     with:
-  #       creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
-  #   - run: |
-  #       az resource list
 
   terraform:
     name: Terraform
@@ -169,3 +93,67 @@ jobs:
         ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
         ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
       run: terraform apply -auto-approve -input=false
+
+  scoutsuite:
+    needs: terraform
+    runs-on: ubuntu-latest
+    steps:
+    #create credfile
+    - name: replace json
+      run: |
+        cat << EOF > credfile.json
+        {
+            "clientId": "${{ secrets.ARM_CLIENT_ID }}",
+            "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}",
+            "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}",
+            "tenantId": "${{ secrets.ARM_TENANT_ID }}",
+            "activeDirectoryEndpointUrl": "https://login.microsoftonline.com",
+            "resourceManagerEndpointUrl": "https://management.azure.com/",
+            "activeDirectoryGraphResourceId": "https://graph.windows.net/",
+            "sqlManagementEndpointUrl": "https://management.core.windows.net:8443/",
+            "galleryEndpointUrl": "https://gallery.azure.com/",
+            "managementEndpointUrl": "https://management.core.windows.net/"
+          }
+        EOF
+    - name: docker run
+      run: |
+        docker run -t -d --name scoutsuitegh ghcr.io/colac/scoutsuite:master
+    - name: docker cp inside container
+      run: |
+        docker cp credfile.json scoutsuitegh:/root/ScoutSuite/credfile.json
+    - name: run scoutsuite
+      run: |
+        docker exec -d scoutsuitegh python3.8 /root/ScoutSuite/scout.py azure --file-auth /root/ScoutSuite/credfile.json --no-browser --report-dir /root/ScoutSuite/scout-report
+    - name: Sleep for 120s
+      run: sleep 120s
+      shell: bash
+    - name: docker cp outside container
+      run: |
+        docker exec scoutsuitegh ls /root/ScoutSuite
+        echo "docker exec"
+        docker cp $(docker ps -f ancestor=ghcr.io/colac/scoutsuite:master --format "{{.ID}}"):/root/ScoutSuite/README.md ./
+        ls -la
+        docker cp $(docker ps -f ancestor=ghcr.io/colac/scoutsuite:master --format "{{.ID}}"):/root/ScoutSuite/scout-report ./scoutReport
+      continue-on-error: true
+    - name: docker rm container
+      run: |
+        docker stop scoutsuitegh
+        docker rm scoutsuitegh
+      continue-on-error: true
+
+    - name: Upload Report Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: scoutsuiteReport
+        path: ./scoutReport # or path/to/artifact
+#delete credfile
+  delete-file:
+    needs: scoutsuite
+    runs-on: ubuntu-latest
+    steps:
+    - name: delete file
+      run: |
+        ls -la
+        rm -rf credfile.json
+        echo "after delete"
+        ls -la
